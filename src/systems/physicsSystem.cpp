@@ -135,18 +135,13 @@ void PhysicsSystem::collide(Scene* scene) {
 		const auto pos = scene->get<Components::position>(entity).mPosition;
 		const auto cell = mCache.chunk[(pos.x() / Components::block::BLOCK_SIZE) - leftChunk]
 					      [pos.y() / Components::block::BLOCK_SIZE];
+
 		if (cell) {
 			if (AABBxAABB(scene, entity, cell)) {
 				pushBack(scene, entity, cell);
 			}
 		}
 	}
-
-	/*
-	// Multithreading this will result in worse performance :(
-	for (const auto& entity : entities) {
-	}
-	*/
 
 	// Debug editor
 #if defined(IMGUI) && defined(DEBUG)
