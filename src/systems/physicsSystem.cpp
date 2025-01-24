@@ -26,19 +26,23 @@
 // The physicsSystem is in charge of the collision and mouvements
 PhysicsSystem::PhysicsSystem() noexcept : mGame(Game::getInstance()) {}
 
-// Performance benchmark:
-// Before enabling checks (98f1275078cad77b0b7a3145b4e57c6f098bd078): 2560632.097561ns avg (391 FPS)
-// After enabling checks  (1b5262e0b971bb3b8308703605b070f7b8d31608): 2757778.578947ns avg (363 FPS)
-// Diff:                                                               197146.481386ns avg ( 28 FPS)
-
-// Whole prog perf
-// GCC                                                                2917566.270833ns avg (343 FPS)
-// Parralel collision detection std::execution::par_unseq             2887647.807018ns avg (346 FPS)
-// Aww soo many frances lost
-
 void PhysicsSystem::update(Scene* scene, const float delta) {
 	constexpr const static float G = 1200.0f;
 	constexpr const static float jumpForce = 600.0f;
+
+	// Reset cache
+	for (auto& row : mCache.chunk) {
+		for (auto& block : row) {
+			block = 0;
+		}
+	}
+
+	const auto leftChunk = (mGame->getLevel()->getPosition() - 1) * Chunk::CHUNK_WIDTH;
+
+	for (const auto& block : scene->view<Components::collision, Components::block>()) {
+		const auto pos = scene->get<Components::block>(block).mPosition;
+		mCache.chunk[pos.x() - leftChunk][pos.y()] = block;
+	}
 
 	if (!mGame->getSystemManager()->getUISystem()->empty()) {
 		return;
@@ -110,20 +114,12 @@ void PhysicsSystem::update(Scene* scene, const float delta) {
 }
 
 void PhysicsSystem::collide(Scene* scene) {
-	// Populate cache once
 	const auto leftChunk = (mGame->getLevel()->getPosition() - 1) * Chunk::CHUNK_WIDTH;
-
-	// Reset cache
-	for (auto& row : mCache.chunk) {
-		for (auto& block : row) {
-			block = 0;
-		}
+	if (!mGame->getSystemManager()->getUISystem()->empty()) {
+		return;
 	}
 
 	for (const auto& block : scene->view<Components::collision, Components::block>()) {
-		const auto pos = scene->get<Components::block>(block).mPosition;
-		mCache.chunk[pos.x() - leftChunk][pos.y()] = block;
-
 		if (AABBxAABB(scene, mGame->getPlayerID(), block)) {
 			pushBack(scene, mGame->getPlayerID(), block);
 		}
