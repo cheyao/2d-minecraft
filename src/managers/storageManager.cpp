@@ -11,7 +11,6 @@
 #include <SDL3/SDL.h>
 #include <cstddef>
 #include <memory>
-#include <stdexcept>
 #include <string>
 
 /*
@@ -28,7 +27,7 @@ StorageManager::~StorageManager() { SDL_Log("Storage Manager destroyed"); }
 void StorageManager::save() {
 	SDL_Log("Saving state");
 
-	SDL_Storage* storage = SDL_OpenUserStorage("cyao", "opengl", 0);
+	SDL_Storage* storage = SDL_OpenUserStorage("cyao", "2d-minecraft", 0);
 	if (storage == nullptr) {
 		SDL_LogCritical(SDL_LOG_CATEGORY_VIDEO, "\033[31mFailed to open user storage: %s\033[0m",
 				SDL_GetError());
@@ -60,7 +59,7 @@ void StorageManager::save() {
 bool StorageManager::restore() {
 	SDL_Log("Restoring state");
 
-	SDL_Storage* storage = SDL_OpenUserStorage("cyao", "opengl", 0);
+	SDL_Storage* storage = SDL_OpenUserStorage("cyao", "2d-minecraft", 0);
 	if (storage == nullptr) {
 		SDL_LogCritical(SDL_LOG_CATEGORY_VIDEO, "\033[31mFailed to open user storage: %s\033[0m",
 				SDL_GetError());
