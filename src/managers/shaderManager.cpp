@@ -1,6 +1,5 @@
 #include "managers/shaderManager.hpp"
 
-#include "imgui.h"
 #include "opengl/shader.hpp"
 #include "utils.hpp"
 
@@ -115,6 +114,8 @@ void ShaderManager::reload() {
 }
 
 #ifdef IMGUI
+#include "imgui.h"
+
 void ShaderManager::debugGui() {
 	static bool liveEdit = false;
 	ImGui::Begin("Developer menu");
