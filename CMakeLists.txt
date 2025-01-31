@@ -483,3 +483,6 @@ if(UNDEFINED STREQUAL ON)
 	target_compile_options(${BUILD_NAME} PRIVATE -fsanitize=undefined -coverage -g -fno-omit-frame-pointer -O0 -fno-optimize-sibling-calls)
 	target_link_options(${BUILD_NAME} PRIVATE -fsanitize=undefined -coverage -g -O0)
 endif()
+
+# Enable cpack
+include(CPack)
