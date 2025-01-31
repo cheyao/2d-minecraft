@@ -9,7 +9,10 @@ build/
 rel/
 web/
 webrel/
+.flatpak-builder/
 san/
+builddir/
+repo/
 webdeb/
 nogui/
 gcc/

@@ -9,7 +9,6 @@
 #include "opengl/texture.hpp"
 #include "registers.hpp"
 #include "systems/UISystem.hpp"
-#include "systems/renderSystem.hpp"
 #include "third_party/glad/glad.h"
 #include "third_party/stb_image.h"
 #include "utils.hpp"
@@ -69,7 +68,9 @@ Texture* TextureManager::get(const std::string& name, const bool srgb) {
 		SDL_Log("Warining! Texture not found for %s", name.data());
 
 		delete texture;
-		texture = get("missing-texture.png");
+		if (name != "missing-texture.png") {
+			texture = get("missing-texture.png");
+		}
 	}
 
 	mTextures[name] = texture;

@@ -1,4 +1,4 @@
-id: org.cyao.opengl
+id: com.cyao.flat-minecraft
 runtime: org.freedesktop.Platform
 runtime-version: '23.08'
 sdk: org.freedesktop.Sdk

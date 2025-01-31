@@ -41,7 +41,14 @@ void PhysicsSystem::update(Scene* scene, const float delta) {
 
 	for (const auto& block : scene->view<Components::collision, Components::block>()) {
 		const auto pos = scene->get<Components::block>(block).mPosition;
-		mCache.chunk[pos.x() - leftChunk][pos.y()] = block;
+		const auto apos = pos.x() - leftChunk;
+
+		if (apos >= 48) {
+			SDL_Log("Error! Block out of cache range, ignoring");
+			continue;
+		}
+
+		mCache.chunk[apos][pos.y()] = block;
 	}
 
 	if (!mGame->getSystemManager()->getUISystem()->empty()) {
@@ -129,8 +136,14 @@ void PhysicsSystem::collide(Scene* scene) {
 	const auto entities = scene->view<Components::collision, Components::position>();
 	for (const auto& entity : entities) {
 		const auto pos = scene->get<Components::position>(entity).mPosition;
-		const auto cell = mCache.chunk[(pos.x() / Components::block::BLOCK_SIZE) - leftChunk]
-					      [pos.y() / Components::block::BLOCK_SIZE];
+		const auto apos = (pos.x() / Components::block::BLOCK_SIZE) - leftChunk;
+
+		if (apos >= 48) {
+			SDL_Log("Error! Block out of cache range, ignoring");
+			continue;
+		}
+
+		const auto cell = mCache.chunk[apos][pos.y() / Components::block::BLOCK_SIZE];
 
 		if (cell) {
 			if (AABBxAABB(scene, entity, cell)) {

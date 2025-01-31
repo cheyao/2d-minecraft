@@ -60,9 +60,24 @@ Dependencies:
 
 - SDL3
 
+### Flatpack
+Flatpack is the easiest way to compile on linux
+```bash 
+$ git clone --depth 1 https://github.com/cheyao/2d-minecraft.git
+$ cd 2d-minecraft 
+$ flatpak-builder --user --install-deps-from=flathub --force-clean --repo=repo --install build com.cyao.flat-minecraft.yml
+$ flatpak run com.cyao.flat-minecraft
+```
+
 ### MacOS and Linux
 
-Compile SDL3:
+If your package manager has SDL3 install it there:
+```
+$ brew install sdl3   # MacOS
+$ sudo pacman -S SDL3 # Arch Linux
+```
+
+Or compile SDL3:
 ```bash
 $ git clone --depth 1 https://github.com/libsdl-org/SDL.git
 $ cd SDL 
