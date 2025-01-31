@@ -322,7 +322,7 @@ void FurnaceInventory::draw(class Scene* scene) {
 		vcount = 1;
 	}
 
-	const auto drawSlot = [&](float ox, float oy, int slot) {
+	const auto drawSlot = [&](float ox, float oy, std::uint64_t slot) {
 		if (!(mSmeltingCount[slot] == 0 && !virtItems)) {
 			auto type = mSmeltingItems[slot];
 			auto count = mSmeltingCount[slot];

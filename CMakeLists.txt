@@ -231,6 +231,7 @@ if (ANDROID)
 elseif(APPLE)
 	if(DEBUG)
 		add_executable(${BUILD_NAME} ${SRC})
+		install(TARGETS ${BUILD_NAME} DESTINATION bin)
 	else()
 		# Package into a application bundle
 		add_executable(${BUILD_NAME} MACOSX_BUNDLE ${SRC})
@@ -250,6 +251,7 @@ elseif(APPLE)
 	target_link_libraries(${BUILD_NAME} PRIVATE ${OPENGL_LIBRARIES})
 elseif(WINDOWS)
 	add_executable(${BUILD_NAME} WIN32 ${SRC})
+	install(TARGETS ${BUILD_NAME} DESTINATION bin)
 
 	if(NOT MSVC)
 		target_compile_options(${BUILD_NAME} PRIVATE -D__WINDOWS__)
@@ -274,6 +276,7 @@ elseif(WEB)
 	endif()
 else()
 	add_executable(${BUILD_NAME} ${SRC})
+	install(TARGETS ${BUILD_NAME} DESTINATION bin)
 endif()
 
 # General flags
@@ -405,6 +408,7 @@ if(DEBUG)
 		DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets" "${CMAKE_CURRENT_SOURCE_DIR}/assets/strings/en.json"
 	)
 	add_custom_target(copy-assets ALL DEPENDS ${CMAKE_BINARY_DIR}/assets)
+	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets" TYPE BIN)
 else()
 	add_custom_command(
 		OUTPUT ${CMAKE_BINARY_DIR}/assets
@@ -412,6 +416,7 @@ else()
 		DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/assets" "${CMAKE_CURRENT_SOURCE_DIR}/assets/strings/en.json"
 	)
 	add_custom_target(copy-assets ALL DEPENDS ${CMAKE_BINARY_DIR}/assets)
+	install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets" TYPE BIN)
 endif()
 
 # Copy stuff for apple

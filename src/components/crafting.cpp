@@ -336,7 +336,7 @@ bool CraftingInventory::checkRecipie(const std::uint64_t r) {
 	const auto& recipie = registers::CRAFTING_RECIPIES[r];
 
 	// Shapeless crafting
-	if (std::get<0>(recipie) == std::make_pair(0, 0)) {
+	if (std::get<0>(recipie) == std::make_pair<std::uint64_t, std::uint64_t>(0, 0)) {
 		auto items = std::get<1>(recipie);
 
 		std::uint64_t toFind = items.size();
