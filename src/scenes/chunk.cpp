@@ -230,7 +230,7 @@ void Chunk::spawnOres(std::vector<std::vector<Components::Item>>& blocks, class 
 			}
 
 			// Roll
-			for (const auto vein : registers::VEINS) {
+			for (const auto& vein : registers::VEINS) {
 				if (y >= std::get<1>(vein)) {
 					continue;
 				}

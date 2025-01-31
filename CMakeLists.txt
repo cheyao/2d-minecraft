@@ -157,9 +157,14 @@ if(ANDROID STREQUAL ON)
 	message("-- Progress bar doesn't work, please wait till the end")
 	message("-- If this doesn't work, go to \"android\" folder and run ./gradlew assembleRelease")
 
-	set(NAMESPACE com.cyao.${PROJECT_NAME})
-	set(BUILD_NAME ${PROJECT_NAME})
+	if (${PROJECT_NAME} STREQUAL "2d-minecraft")
+		# No numbers, and maybe no -?
+		set(NAMESPACE com.cyao.flat_minecraft)
+	else()
+		set(NAMESPACE com.cyao.${PROJECT_NAME})
+	endif()
 
+	set(BUILD_NAME ${PROJECT_NAME})
 	add_subdirectory(android)
 
 	return()

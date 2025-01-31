@@ -44,7 +44,6 @@ void PhysicsSystem::update(Scene* scene, const float delta) {
 		const auto apos = pos.x() - leftChunk;
 
 		if (apos >= 48) {
-			SDL_Log("Error! Block out of cache range, ignoring");
 			continue;
 		}
 

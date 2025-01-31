@@ -56,6 +56,8 @@ The systems manage all the logic and changes the components.
 
 <h2 align="center">Building</h2>
 
+All builds can be packaged by compiling the `package` target (Using cmake CPack)
+
 Dependencies:
 
 - SDL3
@@ -107,12 +109,18 @@ $ open /Applications/OpenGL.app # Or just openg the app
 
 Same, use cmake to build project
 
+I reccomend cross compiling with the arch mingw package
+
+The cmake directory includes a getdll64 script to help package all the dlls.
+
 ### Android
 
-MacOS Dependencies:
+Dependencies, java 17 is a must:
 ```bash
 $ brew install --cask android-platform-tools android-ndk temurin@17
 $ brew install cmake
+# For arch
+$ sudo pacman -S android-tools android-sdk-cmdline-tools-latest android-sdk-build-tools android-sdk-platform-tools android-platform android-ndk
 ```
 
 Add these to your `.zshrc` (Change it to the appropriate folders on linux):
@@ -120,11 +128,18 @@ Add these to your `.zshrc` (Change it to the appropriate folders on linux):
 $ export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
 $ export JAVA_HOME=`/usr/libexec/java_home -v 17` # Yes, you __must__ use java 17, blame android
 $ export ANDROID_HOME="/usr/local/share/android-commandlinetools/"
+
+# For arch linux
+$ export ANDROID_HOME="/opt/android-sdk"
+$ export ANDROID_NDK_HOME="/opt/android-ndk"
+
+# You might need to accept the licenses with
+$ sdkmanager --licenses
 ```
 
 Configure your gradlew's credentials (I'm not gonna let you use mine duh)
 ```
-File: ~/.gradle/gradle.properties
+nvim .gradle/gradle.properties
 
 RELEASE_STORE_FILE=[KEYSTORE PATH RELATIVE FROM ./android]
 RELEASE_STORE_PASSWORD=[KEYSTORE PASSWORD]
@@ -144,6 +159,8 @@ $ cmake -DCMAKE_BUILD_TYPE=Release \
 $ cmake --build .
 ```
 Now there is the apk in the folder
+
+Or alternatively you can cd into the android folder, and run `./gradlew` manually. But you must run the cmake project ot correctly generate a few files.
 
 ## Web 
 Install [emsdk](https://emscripten.org/) to `~/emsdk`
