@@ -1,4 +1,4 @@
-<h1 align="center" style="text-shadow: 2px 2px 5px red;">2D Minecraft + Cyao Game Engine</h2>
+<h1 align="center" style="text-shadow: 2px 2px 5px red;">2D Minecraft with Custom Game Engine</h2>
 
 <div align="center">
     <img src="https://cloud-a7gokq2sp-hack-club-bot.vercel.app/0image.png" width="auto" height="auto" alt="Demo pic of the game">
@@ -239,8 +239,6 @@ Add your own blocks to `~/.local/share/cyao/opengl/`
 
 # :3
 
-No AI used, the prs from https://github.com/cheyao/opengl/pulls?q=is%3Apr+is%3Aclosed included some, but they included some fucking bugs and I had to rewrite everything.
-
-Plus I'm smarter then AI! My implementation of sparse set caching shaved out 700000ns of runtime while the ai version shaved only 400000ns!
+See the Minecraft mod version of this at https://modrinth.com/mod/2d-minecraft
 
 NOT AN OFFICIAL MINECRAFT SPINOFF. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT
