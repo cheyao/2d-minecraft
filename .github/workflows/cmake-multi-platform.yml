@@ -54,11 +54,20 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
     
+    - name: Set up MSVC toolchain
+      uses: ilammy/msvc-dev-cmd@v1
+      if: ${{ matrix.platform.name == 'Windows' }}
+      with:
+        arch: x64
+    
+    - name: Set up ninja
+      uses: ./.github/actions/setup-ninja
+
     - uses: libsdl-org/setup-sdl@main
       id: sdl
       with:
-        install-linux-dependencies: true
-        version: 3-latest
+        version: sdl3-latest
+        cmake-generator: Ninja
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
