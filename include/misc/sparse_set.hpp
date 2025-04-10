@@ -47,7 +47,7 @@ template <typename Component> class sparse_set : public sparse_set_interface {
 
 	// No need to clean up, everything is in a vector
 	sparse_set() = default;
-	sparse_set(sparse_set&&) = delete;
+	sparse_set(sparse_set&&) = default; // TODO: Verify if this works
 	sparse_set(const sparse_set&) = delete;
 	sparse_set& operator=(sparse_set&&) = delete;
 	sparse_set& operator=(const sparse_set&) = delete;

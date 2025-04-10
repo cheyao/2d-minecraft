@@ -1,6 +1,5 @@
 #pragma once
 
-#include <bitset>
 #include <cstddef>
 #include <cstdint>
 #include <deque>
@@ -10,8 +9,6 @@ using EntityID = std::uint64_t;
 
 constexpr const static EntityID MAX_ENTITIES = std::numeric_limits<EntityID>::max();
 constexpr const static std::uint64_t MAX_COMPONENT_TYPES = 64;
-
-using ComponentMask = std::bitset<MAX_COMPONENT_TYPES>;
 
 class EntityManager {
       public:
