@@ -14,6 +14,8 @@
 
 namespace utils {
 
+template <class...> struct False : std::bool_constant<false> {};
+
 template <typename Iterator> struct iterable_adaptor final {
 	constexpr iterable_adaptor(Iterator from, Iterator to) noexcept : first{std::move(from)}, last{std::move(to)} {}
 
@@ -85,8 +87,8 @@ class sparse_set_view {
 	sparse_set_view() noexcept {
 		if constexpr (sizeof...(ComponentTypes) == 1) {
 			const auto& c = *(static_cast<utils::sparse_set<ComponentTypes>*>(
-						ComponentManager::getInstance()->getPool<ComponentTypes>()),
-					...);
+						  ComponentManager::getInstance()->getPool<ComponentTypes>()),
+					  ...);
 			mEntities = std::vector<EntityID>(c.begin(), c.end());
 		} else {
 			// This first part makes a array of all the sizes of the that we loop through
@@ -166,7 +168,7 @@ class sparse_set_view {
 				func(ComponentManager::getInstance()->getPool<ComponentTypes>()->get(entity)...);
 			}
 		} else {
-			static_assert(false, "The signatures for each are: (EntityID), (EntityID, ComponentTypes&...) "
+			static_assert(False<Func>{}, "The signatures for each are: (EntityID), (EntityID, ComponentTypes&...) "
 					     "and (ComponentTypes&...)");
 			std::unreachable();
 		}

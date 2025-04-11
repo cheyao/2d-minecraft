@@ -287,7 +287,7 @@ endif()
 
 # General flags
 if(MSVC)
-	target_compile_options(${BUILD_NAME} PRIVATE /IGNORE:4244,4042,4996,4305)
+	target_compile_options(${BUILD_NAME} PRIVATE /IGNORE:C4244,STL4042,C4996)
 
 	if(DEBUG)
 		# TODO: Find out the correct msvc flags
