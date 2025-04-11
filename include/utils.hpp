@@ -32,7 +32,7 @@ inline constexpr float toRadians(const float degrees) { return degrees * (PI / 1
 
 inline constexpr float toDegrees(const float radians) { return radians * (180.f / PI); }
 
-inline constexpr bool nearZero(const float number, const float epsilon = 0.001f) {
+inline bool nearZero(const float number, const float epsilon = 0.001f) {
 	if (SDL_fabs(number) <= epsilon) {
 		return true;
 	} else {

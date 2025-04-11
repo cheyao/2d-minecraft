@@ -56,7 +56,7 @@ The systems manage all the logic and changes the components.
 
 <h2 align="center">Building</h2>
 
-All builds can be packaged by compiling the `package` target (Using cmake CPack)
+All builds can be packaged by compiling the `package` target (Using cmake CPack). If you are using `clang`, you need libc++
 
 Dependencies:
 
