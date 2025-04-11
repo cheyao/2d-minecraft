@@ -287,12 +287,14 @@ endif()
 
 # General flags
 if(MSVC)
+	target_compile_options(${BUILD_NAME} PRIVATE /IGNORE:4244,4042,4996,4305)
+
 	if(DEBUG)
 		# TODO: Find out the correct msvc flags
-		target_compile_options(${BUILD_NAME} PRIVATE /W4 /WX /MDd /Zi /Ob0 /Od /RTC1 /W3 /GR /EHsc /utf-8 /IGNORE:4244)
+		target_compile_options(${BUILD_NAME} PRIVATE /W4 /WX /MDd /Zi /Ob0 /Od /RTC1 /W3 /GR /EHsc /utf-8)
 		target_compile_definitions(${BUILD_NAME} PRIVATE /DWIN32 /D__WINDOWS__ /DDEBUG /D_DEBUG)
 	else()
-		target_compile_options(${BUILD_NAME} PRIVATE /MD /O2 /Ob2 /utf-8 /IGNORE:4244)
+		target_compile_options(${BUILD_NAME} PRIVATE /MD /O2 /Ob2 /utf-8)
 		target_compile_definitions(${BUILD_NAME} PRIVATE /D__WINDOWS__ /DWIND32 /DEIGEN_NO_DEBUG /DNDEBUG)
 	endif()
 
