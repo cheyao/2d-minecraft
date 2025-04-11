@@ -18,6 +18,7 @@ option(IMGUI 		"Enable GUI" OFF)
 option(ANDROID		"Build for android (automatically build with gradle)" OFF)
 option(OPTIMIZE		"Optimize a lot" OFF)
 option(MOLD		"Use mold" OFF)
+option(LIBCPP	 	"Use libc++" OFF)
 # TODO: option(VENDOR 		"Vendor libraries" OFF)
 
 option(HIDPI		"High DPI" OFF)
@@ -223,7 +224,7 @@ endif()
 #
 
 # Clang got some errors with `unordered_map` when using c++23 and libstdc++
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT ANDROID)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT ANDROID AND LIBCPP STREQUAL "ON")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -fexperimental-library")
 endif()
 
@@ -288,10 +289,10 @@ endif()
 if(MSVC)
 	if(DEBUG)
 		# TODO: Find out the correct msvc flags
-		target_compile_options(${BUILD_NAME} PRIVATE /W4 /WX /MDd /Zi /Ob0 /Od /RTC1 /W3 /GR /EHsc /utf-8)
+		target_compile_options(${BUILD_NAME} PRIVATE /W4 /WX /MDd /Zi /Ob0 /Od /RTC1 /W3 /GR /EHsc /utf-8 /IGNORE:4244)
 		target_compile_definitions(${BUILD_NAME} PRIVATE /DWIN32 /D__WINDOWS__ /DDEBUG /D_DEBUG)
 	else()
-		target_compile_options(${BUILD_NAME} PRIVATE /MD /O2 /Ob2 /utf-8)
+		target_compile_options(${BUILD_NAME} PRIVATE /MD /O2 /Ob2 /utf-8 /IGNORE:4244)
 		target_compile_definitions(${BUILD_NAME} PRIVATE /D__WINDOWS__ /DWIND32 /DEIGEN_NO_DEBUG /DNDEBUG)
 	endif()
 

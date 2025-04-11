@@ -424,7 +424,7 @@ bool CraftingInventory::checkRecipie(const std::uint64_t r) {
 				}
 
 				items = std::get<1>(recipie);
-			breakinnerloop:
+			breakinnerloop:;
 			}
 		}
 	}

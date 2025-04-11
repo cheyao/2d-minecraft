@@ -75,7 +75,7 @@ void InputSystem::updateMouse(Scene* scene, const float) {
 		}
 
 		tryPlace(scene, blockPos.template cast<int>());
-	afterPlace:
+	afterPlace:;
 	}
 
 	static std::int64_t mLastHold = SDL_GetTicks();

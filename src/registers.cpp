@@ -70,8 +70,7 @@ const std::unordered_map<Components::Item, std::pair<int, std::uint64_t>> BREAK_
 	{Item::OAK_PLANKS, {0, 60}},  {Item::CRAFTING_TABLE, {0, 50}}, {Item::COBBLESTONE, {1, 80}},
 	{Item::FURNACE, {1, 80}},     {Item::CAMPFIRE, {0, 50}},       {Item::TORCH, {0, 2}},
 	{Item::IRON_ORE, {3, 120}},   {Item::COAL_ORE, {1, 120}},      {Item::COAL_BLOCK, {1, 80}},
-	{Item::IRON_BLOCK, {3, 180}}, {Item::DIAMOND_ORE, {5, 280}},   {Item::DIAMOND_BLOCK, {5, 200}}
-};
+	{Item::IRON_BLOCK, {3, 180}}, {Item::DIAMOND_ORE, {5, 280}},   {Item::DIAMOND_BLOCK, {5, 200}}};
 
 // Will add one in the real calculation
 // WOOD 1 STONE 3 IRON 5 diamond 7 neth 8 gold 11
@@ -90,24 +89,42 @@ extern const std::unordered_map<Components::Item, int> MINING_LEVEL = {
 };
 
 extern const std::unordered_map<Components::Item, registers::MiningSystem> MINING_SYSTEM = {
-	{Item::GRASS_BLOCK, MiningSystem::SHOVEL},     {Item::DIRT, MiningSystem::SHOVEL},
-	{Item::STONE, MiningSystem::PICKAXE},	       {Item::OAK_LOG, MiningSystem::AXE},
-	{Item::OAK_LEAVES, MiningSystem::HOE},	       {Item::OAK_PLANKS, MiningSystem::AXE},
-	{Item::CRAFTING_TABLE, MiningSystem::AXE},     {Item::WOODEN_SHOVEL, MiningSystem::SHOVEL},
-	{Item::WOODEN_AXE, MiningSystem::AXE},	       {Item::WOODEN_HOE, MiningSystem::HOE},
-	{Item::WOODEN_PICKAXE, MiningSystem::PICKAXE}, {Item::STONE_SHOVEL, MiningSystem::SHOVEL},
-	{Item::STONE_AXE, MiningSystem::AXE},	       {Item::STONE_HOE, MiningSystem::HOE},
-	{Item::STONE_PICKAXE, MiningSystem::PICKAXE},  {Item::COBBLESTONE, MiningSystem::PICKAXE},
-	{Item::FURNACE, MiningSystem::PICKAXE},	       {Item::CAMPFIRE, MiningSystem::AXE},
-	{Item::IRON_ORE, MiningSystem::PICKAXE},       {Item::COAL_ORE, MiningSystem::PICKAXE},
-	{Item::COAL_BLOCK, MiningSystem::PICKAXE},     {Item::IRON_BLOCK, MiningSystem::PICKAXE},
-	{Item::IRON_SHOVEL, MiningSystem::SHOVEL},     {Item::IRON_AXE, MiningSystem::AXE},
-	{Item::IRON_HOE, MiningSystem::HOE},	       {Item::IRON_PICKAXE, MiningSystem::PICKAXE},
-	{Item::IRON_SWORD, MiningSystem::SWORD},       {Item::STONE_SWORD, MiningSystem::SWORD},
-	{Item::WOODEN_SWORD, MiningSystem::SWORD},     {Item::DIAMOND_SWORD, MiningSystem::SWORD},
-	{Item::DIAMOND_AXE, MiningSystem::AXE},	       {Item::DIAMOND_HOE, MiningSystem::HOE},
-	{Item::DIAMOND_SHOVEL, MiningSystem::SHOVEL},  {Item::DIAMOND_ORE, MiningSystem::PICKAXE},
-	{Item::DIAMOND_PICKAXE, MiningSystem::PICKAXE},{Item::DIAMOND_BLOCK, MiningSystem::PICKAXE},
+	{Item::GRASS_BLOCK, MiningSystem::SHOVEL},
+	{Item::DIRT, MiningSystem::SHOVEL},
+	{Item::STONE, MiningSystem::PICKAXE},
+	{Item::OAK_LOG, MiningSystem::AXE},
+	{Item::OAK_LEAVES, MiningSystem::HOE},
+	{Item::OAK_PLANKS, MiningSystem::AXE},
+	{Item::CRAFTING_TABLE, MiningSystem::AXE},
+	{Item::WOODEN_SHOVEL, MiningSystem::SHOVEL},
+	{Item::WOODEN_AXE, MiningSystem::AXE},
+	{Item::WOODEN_HOE, MiningSystem::HOE},
+	{Item::WOODEN_PICKAXE, MiningSystem::PICKAXE},
+	{Item::STONE_SHOVEL, MiningSystem::SHOVEL},
+	{Item::STONE_AXE, MiningSystem::AXE},
+	{Item::STONE_HOE, MiningSystem::HOE},
+	{Item::STONE_PICKAXE, MiningSystem::PICKAXE},
+	{Item::COBBLESTONE, MiningSystem::PICKAXE},
+	{Item::FURNACE, MiningSystem::PICKAXE},
+	{Item::CAMPFIRE, MiningSystem::AXE},
+	{Item::IRON_ORE, MiningSystem::PICKAXE},
+	{Item::COAL_ORE, MiningSystem::PICKAXE},
+	{Item::COAL_BLOCK, MiningSystem::PICKAXE},
+	{Item::IRON_BLOCK, MiningSystem::PICKAXE},
+	{Item::IRON_SHOVEL, MiningSystem::SHOVEL},
+	{Item::IRON_AXE, MiningSystem::AXE},
+	{Item::IRON_HOE, MiningSystem::HOE},
+	{Item::IRON_PICKAXE, MiningSystem::PICKAXE},
+	{Item::IRON_SWORD, MiningSystem::SWORD},
+	{Item::STONE_SWORD, MiningSystem::SWORD},
+	{Item::WOODEN_SWORD, MiningSystem::SWORD},
+	{Item::DIAMOND_SWORD, MiningSystem::SWORD},
+	{Item::DIAMOND_AXE, MiningSystem::AXE},
+	{Item::DIAMOND_HOE, MiningSystem::HOE},
+	{Item::DIAMOND_SHOVEL, MiningSystem::SHOVEL},
+	{Item::DIAMOND_ORE, MiningSystem::PICKAXE},
+	{Item::DIAMOND_PICKAXE, MiningSystem::PICKAXE},
+	{Item::DIAMOND_BLOCK, MiningSystem::PICKAXE},
 };
 
 const std::vector<std::pair<float, std::vector<std::pair<Components::Item, Eigen::Vector2i>>>> SURFACE_STRUCTURES = {
@@ -480,10 +497,8 @@ const std::unordered_map<Components::Item, double> BURNING_TIME = {
 
 // Time in seconds
 const std::unordered_map<Components::Item, std::pair<double, Components::Item>> SMELTING_RECIPIE = {
-	{Item::COBBLESTONE, {8, Item::STONE}},
-	{Item::OAK_LOG, {8, Item::CHARCOAL}},
-	{Item::IRON_ORE, {8, Item::IRON_INGOT}},
-	{Item::COAL_ORE, {8, Item::COAL}},
+	{Item::COBBLESTONE, {8, Item::STONE}},	 {Item::OAK_LOG, {8, Item::CHARCOAL}},
+	{Item::IRON_ORE, {8, Item::IRON_INGOT}}, {Item::COAL_ORE, {8, Item::COAL}},
 	{Item::DIAMOND_ORE, {8, Item::DIAMOND}},
 };
 
@@ -493,8 +508,9 @@ template <typename T, typename... Args> T* staticHelper(Args&&... args) {
 };
 
 const std::unordered_map<Components::Item, Screen* (*)(void)> CLICKABLES = {
-	{Item::CRAFTING_TABLE, [] -> Screen* { return staticHelper<CraftingInventory>(crafting_table_t()); }},
-	{Item::FURNACE, [] -> Screen* { return staticHelper<FurnaceInventory>(furnace_t()); }},
+	{Item::CRAFTING_TABLE,
+	 [] { return static_cast<Screen*>(staticHelper<CraftingInventory>(crafting_table_t())); }},
+	{Item::FURNACE, [] { return static_cast<Screen*>(staticHelper<FurnaceInventory>(furnace_t())); }},
 };
 
 const std::vector<std::string> BACKGROUND_SOUNDS = {
