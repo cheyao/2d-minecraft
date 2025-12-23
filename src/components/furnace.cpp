@@ -27,8 +27,8 @@ bool FurnaceInventory::update(class Scene* const scene, const float delta) {
 	SystemManager* const systemManager = mGame->getSystemManager();
 	const Eigen::Vector2f dimensions = systemManager->getDemensions();
 
-	float sx, sy;
-	float ox, oy;
+	float sx, sy; // screen xy
+	float ox, oy; // object xy
 	float scale;
 	if (dimensions.x() <= dimensions.y()) {
 		sx = dimensions.x() / 4 * 3;
@@ -59,8 +59,8 @@ bool FurnaceInventory::update(class Scene* const scene, const float delta) {
 	mouseY = dimensions.y() - mouseY;
 
 	// Test if player is placing inside grid
-	const auto placeGrid = [&mouseX, &mouseY, &slotx, &sloty, &scene, this](float ox, float oy, int slot) {
-		if (mouseX < ox || mouseY < oy || mouseX > (ox + slotx) || mouseY > (oy + sloty)) {
+	const auto placeGrid = [&mouseX, &mouseY, &slotx, &sloty, &scene, this](float x, float y, int slot) {
+		if (mouseX < x || mouseY < y || mouseX > (x + slotx) || mouseY > (y + sloty)) {
 			return;
 		}
 
@@ -322,7 +322,7 @@ void FurnaceInventory::draw(class Scene* scene) {
 		vcount = 1;
 	}
 
-	const auto drawSlot = [&](float ox, float oy, std::uint64_t slot) {
+	const auto drawSlot = [&](float x, float y, std::uint64_t slot) {
 		if (!(mSmeltingCount[slot] == 0 && !virtItems)) {
 			auto type = mSmeltingItems[slot];
 			auto count = mSmeltingCount[slot];
@@ -340,14 +340,14 @@ void FurnaceInventory::draw(class Scene* scene) {
 			Texture* const texture = systemManager->getTexture(registers::TEXTURES.at(type));
 			texture->activate(0);
 
-			shader->set("offset"_u, ox + 5, oy);
+			shader->set("offset"_u, x + 5, y);
 
 			mesh->draw(shader);
 
 			if (count > 1) {
 				mGame->getSystemManager()->getTextSystem()->draw(
 					std::to_string(count),
-					Eigen::Vector2f(ox + INVENTORY_SLOT_X / 2 * scale - 2, oy - 5), false);
+					Eigen::Vector2f(x + INVENTORY_SLOT_X / 2 * scale - 2, y - 5), false);
 			}
 
 			shader->activate();

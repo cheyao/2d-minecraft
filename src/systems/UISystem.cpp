@@ -4,7 +4,8 @@
 #include "opengl/mesh.hpp"
 #include "scene.hpp"
 #include "screens/screen.hpp"
-#include <cstddef>
+
+#include <SDL3/SDL.h>
 
 UISystem::UISystem() noexcept : mGame(Game::getInstance()), mMesh(nullptr) {
 	constexpr const static float vertices[] = {

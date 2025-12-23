@@ -17,15 +17,17 @@ endif()
 option(IMGUI 		"Enable GUI" OFF)
 option(ANDROID		"Build for android (automatically build with gradle)" OFF)
 option(OPTIMIZE		"Optimize a lot" OFF)
-option(MOLD		"Use mold" OFF)
+option(MOLD	    	"Use mold" OFF)
 option(LIBCPP	 	"Use libc++" OFF)
-# TODO: option(VENDOR 		"Vendor libraries" OFF)
+option(VENDOR 		"Vendor libraries" OFF)
+option(STATIC 		"Static link" OFF)
+option(GLES         "Use OpenGL ES" OFF)
 
 option(HIDPI		"High DPI" OFF)
 
 # Misc
 option(ADDRESS	 	"Use address sanitizer" OFF)
-option(LEAK		"Use leak sanitizer" OFF)
+option(LEAK	        "Use leak sanitizer" OFF)
 option(UNDEFINED	"Use undefined sanitizer" OFF)
 option(SANITIZE 	"Build with all sanitizer support if available" OFF)
 option(CHECKS 		"Run checks" OFF)
@@ -285,6 +287,11 @@ else()
 	install(TARGETS ${BUILD_NAME} DESTINATION bin)
 endif()
 
+if(STATIC STREQUAL ON)
+	target_compile_options(${BUILD_NAME} PRIVATE -static)
+    target_link_options(${BUILD_NAME} PRIVATE -static)
+endif()
+
 # General flags
 if(MSVC)
 	target_compile_options(${BUILD_NAME} PRIVATE /IGNORE:C4244,STL4042,C4996)
@@ -321,6 +328,10 @@ else()
 	if (CMAKE_BUILD_TYPE STREQUAL RelWithDebInfo)
 		target_compile_options(${BUILD_NAME} PRIVATE -g)
 	endif()
+
+    if (GLES STREQUAL ON)
+        target_compile_options(${BUILD_NAME} PRIVATE -DGLES)
+    endif()
 endif()
 
 # Enable LTO for non debug
@@ -346,15 +357,26 @@ target_include_directories(${BUILD_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/inc
 
 # SDL
 if(NOT ANDROID) # Android projects include themself using subdirectory
-	if(WEB)
+    if (VENDOR STREQUAL ON)
+        if (STATIC STREQUAL ON)
+            set_directory_properties(SDL_STATIC=ON)
+            add_subdirectory(external/SDL EXCLUDE_FROM_ALL)
+        elseif()
+            add_subdirectory(external/SDL EXCLUDE_FROM_ALL)
+        endif()
+    elseif(WEB)
 		find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-static Headers)
 	else()
-		find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared Headers) # TODO: static build option
+		find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared Headers)
 	endif()
 
-	target_link_libraries(${BUILD_NAME} PRIVATE ${SDL3_LIBRARIES} SDL3::Headers) # Static library?
+    if (STATIC STREQUAL ON)
+        target_link_libraries(${BUILD_NAME} PRIVATE SDL3::SDL3-static SDL3::Headers)
+    else()
+        target_link_libraries(${BUILD_NAME} PRIVATE SDL3::SDL3 SDL3::Headers)
+    endif()
 else()
-	target_link_libraries(${BUILD_NAME} PRIVATE SDL3::SDL3) # Static library?
+    target_link_libraries(${BUILD_NAME} PRIVATE SDL3::SDL3)
 endif()
 
 # ImGUI

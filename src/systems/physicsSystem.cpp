@@ -14,6 +14,7 @@
 #include "utils.hpp"
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_log.h>
 #include <cstddef>
 #include <string>
 

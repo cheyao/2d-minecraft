@@ -13,15 +13,12 @@
 #include "utils.hpp"
 
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_audio.h>
-#include <SDL3/SDL_events.h>
 #include <chrono>
 #include <cinttypes>
 #include <cstdint>
 #include <memory>
 #include <sstream>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #ifdef IMGUI

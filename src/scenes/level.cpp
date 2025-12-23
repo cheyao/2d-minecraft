@@ -28,16 +28,13 @@ Level::Level(const std::string& name)
 
 Level::~Level() {
 	SDL_Log("Unloading level");
-	delete mScene;
 }
 
 void Level::create() {
-	delete mScene;
-
 	SDL_assert(mGame != nullptr);
 	mData.SetObject();
 
-	mScene = new Scene();
+    mScene.reset(new Scene());
 
 	const auto player = mScene->newEntity();
 	mGame->setPlayerID(player);
@@ -50,9 +47,9 @@ void Level::create() {
 						      Components::block::BLOCK_SIZE));
 	mScene->emplace<Components::inventory>(player, new PlayerInventory(mGame, 36));
 
-	mLeft = new Chunk(mScene, mNoise.get(), -1);
-	mCenter = new Chunk(mScene, mNoise.get(), 0);
-	mRight = new Chunk(mScene, mNoise.get(), 1);
+    mLeft = new Chunk(mScene.get(), mNoise.get(), -1);
+    mCenter = new Chunk(mScene.get(), mNoise.get(), 0);
+    mRight = new Chunk(mScene.get(), mNoise.get(), 1);
 
 	mData.AddMember(rapidjson::StringRef(CHUNK_KEY), rapidjson::Value(rapidjson::kObjectType),
 			mData.GetAllocator());
@@ -66,14 +63,12 @@ void Level::create() {
 }
 
 void Level::load(rapidjson::Value& data) {
-	delete mScene;
-
 	mData.CopyFrom(data, mData.GetAllocator());
 
 	SDL_assert(data.HasMember(PLAYER_KEY));
 	SDL_assert(data.HasMember(CHUNK_KEY));
 
-	mScene = new Scene();
+    mScene.reset(new Scene());
 	const EntityID player = mScene->newEntity();
 	mGame->setPlayerID(player);
 
@@ -92,12 +87,12 @@ void Level::load(rapidjson::Value& data) {
 
 		if (this->mData[CHUNK_KEY][sign ? "-" : "+"][SDL_abs(centerChunk)].IsNull()) {
 			SDL_Log("Chunk %d was Null! Making new chunk", centerChunk);
-			chunk = new Chunk(this->mScene, mNoise.get(), centerChunk);
+            chunk = new Chunk(this->mScene.get(), mNoise.get(), centerChunk);
 
 			return;
 		}
 
-		chunk = new Chunk(this->mData[CHUNK_KEY][sign ? "-" : "+"][SDL_abs(centerChunk)], this->mScene);
+        chunk = new Chunk(this->mData[CHUNK_KEY][sign ? "-" : "+"][SDL_abs(centerChunk)], this->mScene.get());
 	};
 
 	const auto playerPos = getVector2f(mData[PLAYER_KEY]["position"]).x();
@@ -169,7 +164,7 @@ void Level::save(rapidjson::Value& data, rapidjson::MemoryPoolAllocator<>& alloc
 
 		this->mData[CHUNK_KEY][chunk->getPosition() < 0 ? "-" : "+"][SDL_abs(chunk->getPosition())].SetObject();
 
-		chunk->save(this->mScene,
+        chunk->save(this->mScene.get(),
 			    this->mData[CHUNK_KEY][chunk->getPosition() < 0 ? "-" : "+"][SDL_abs(chunk->getPosition())],
 			    this->mData.GetAllocator());
 
@@ -215,7 +210,7 @@ void Level::update(const float delta) {
 
 		this->mData[CHUNK_KEY][chunk->getPosition() < 0 ? "-" : "+"][SDL_abs(chunk->getPosition())].SetObject();
 
-		chunk->save(this->mScene,
+        chunk->save(this->mScene.get(),
 			    this->mData[CHUNK_KEY][chunk->getPosition() < 0 ? "-" : "+"][SDL_abs(chunk->getPosition())],
 			    this->mData.GetAllocator());
 
@@ -234,9 +229,9 @@ void Level::update(const float delta) {
 			SDL_LogInfo(SDL_LOG_CATEGORY_CUSTOM, "\033[31mGenerating new chunk for chunk %d\033[0m",
 				    currentChunk - 1);
 
-			mLeft = new Chunk(mScene, mNoise.get(), currentChunk - 1);
+            mLeft = new Chunk(mScene.get(), mNoise.get(), currentChunk - 1);
 		} else {
-			mLeft = new Chunk(chunkData, mScene);
+            mLeft = new Chunk(chunkData, mScene.get());
 		}
 	} else if (currentChunk == mRight->getPosition()) {
 		save(mLeft);
@@ -250,9 +245,9 @@ void Level::update(const float delta) {
 			SDL_LogInfo(SDL_LOG_CATEGORY_CUSTOM, "\033[31mGenerating new chunk for chunk %d\033[0m",
 				    currentChunk + 1);
 
-			mRight = new Chunk(mScene, mNoise.get(), currentChunk + 1);
+            mRight = new Chunk(mScene.get(), mNoise.get(), currentChunk + 1);
 		} else {
-			mRight = new Chunk(chunkData, mScene);
+            mRight = new Chunk(chunkData, mScene.get());
 		}
 	} else {
 		SDL_Log("\033[33mOut of boundary for chunk %d, loaded chunks: %" PRIi64 " %" PRIi64 " %" PRIi64
@@ -263,9 +258,9 @@ void Level::update(const float delta) {
 		save(mCenter);
 		save(mRight);
 
-		mLeft = new Chunk(mScene, mNoise.get(), currentChunk - 1);
-		mCenter = new Chunk(mScene, mNoise.get(), currentChunk);
-		mRight = new Chunk(mScene, mNoise.get(), currentChunk + 1);
+        mLeft = new Chunk(mScene.get(), mNoise.get(), currentChunk - 1);
+        mCenter = new Chunk(mScene.get(), mNoise.get(), currentChunk);
+        mRight = new Chunk(mScene.get(), mNoise.get(), currentChunk + 1);
 	}
 }
 

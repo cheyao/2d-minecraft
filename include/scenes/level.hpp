@@ -22,7 +22,7 @@ class Level {
 	void save(rapidjson::Value& data, rapidjson::MemoryPoolAllocator<>& allocator);
 
 	std::string getName() const { return mName; }
-	class Scene* getScene() const { return mScene; };
+    class Scene* getScene() const { return mScene.get(); };
 
 	// The update method maily checks if new chunks needs to be loaded
 	void update(float delta);
@@ -47,7 +47,7 @@ class Level {
 	class Chunk* mRight;
 
 	class Game* mGame;
-	class Scene* mScene;
+    std::unique_ptr<Scene> mScene;
 
 	std::unique_ptr<class NoiseGenerator> mNoise;
 };
