@@ -61,7 +61,11 @@ RenderSystem::RenderSystem() noexcept
 
 	// Note: These must be set before the window is created https://wiki.libsdl.org/SDL3/SDL_GLattr
 #ifdef GLES
+#ifdef GLES2
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+#else
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+#endif
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
 #else
@@ -193,8 +197,10 @@ RenderSystem::RenderSystem() noexcept
 	// glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// Matrix uniform
+#ifndef GLES2
 	mMatricesUBO = std::make_unique<UBO>(2 * sizeof(Eigen::Affine3f));
 	mMatricesUBO->bind(0);
+#endif // !GLES2
 
 	// Debug Info
 	mGL->printInfo();
@@ -460,7 +466,10 @@ void RenderSystem::setPersp() const {
 	projectionMatrix(2, 3) = -2 * near * far / range;
 	projectionMatrix(3, 3) = 0;
 
+    // FIXME: GLES2
+#ifndef GLES2
 	mMatricesUBO->set(0 * sizeof(Eigen::Affine3f), projectionMatrix);
+#endif // !GLES2
 }
 
 void RenderSystem::drawHUD(Scene* scene) {
@@ -557,5 +566,8 @@ void RenderSystem::setOrtho() const {
 	projectionMatrix(1, 3) = -(top + bottom) / (top - bottom);
 	projectionMatrix(2, 3) = -(far + near) / (far - near);
 
+    // FIXME: GLES2
+#ifndef GLES2
 	mMatricesUBO->set(0 * sizeof(Eigen::Affine3f), projectionMatrix);
+#endif // !GLES2
 }

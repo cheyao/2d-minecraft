@@ -161,7 +161,8 @@ void Shader::set(const std::uint64_t name, const Eigen::Affine3f& mat, const GLb
 	glUniformMatrix4fv(getUniform(name), 1, transpose, mat.data());
 }
 
-void Shader::bind(const std::string_view name, const GLuint index) const {
+void Shader::bind([[maybe_unused]] const std::string_view name, [[maybe_unused]] const GLuint index) const {
+#ifndef GLES2 // Don't use UBO for ES2
 	const GLuint blockIndex = glGetUniformBlockIndex(mShaderProgram, name.data());
 
 	if (blockIndex == GL_INVALID_INDEX) {
@@ -171,6 +172,7 @@ void Shader::bind(const std::string_view name, const GLuint index) const {
 	}
 
 	glUniformBlockBinding(mShaderProgram, blockIndex, index);
+#endif
 }
 
 GLuint Shader::compile(const std::string_view fileName, const GLenum type) {
@@ -192,12 +194,21 @@ GLuint Shader::compile(const std::string_view fileName, const GLenum type) {
 #ifdef GLES
 	// #version 410 core
 	// #version 300 es
+#ifdef GLES2
+	shaderSource[9] = '1';
+#else
 	shaderSource[9] = '3';
+#endif
 	shaderSource[10] = '0';
 	shaderSource[11] = '0';
 	shaderSource[12] = ' ';
+#ifdef GLES2
+	shaderSource[13] = ' ';
+	shaderSource[14] = ' ';
+#else
 	shaderSource[13] = 'e';
 	shaderSource[14] = 's';
+#endif
 	shaderSource[15] = ' ';
 	shaderSource[16] = ' ';
 #endif

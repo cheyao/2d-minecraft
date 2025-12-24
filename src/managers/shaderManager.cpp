@@ -9,7 +9,6 @@
 #include <string>
 #include <string_view>
 #include <unordered_map>
-#include <vector>
 #include <version>
 
 ShaderManager::ShaderManager() : mPath(getBasePath() + "assets/shaders/") { get("default.vert", "default.frag"); }

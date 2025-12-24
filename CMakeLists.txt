@@ -22,6 +22,7 @@ option(LIBCPP	 	"Use libc++" OFF)
 option(VENDOR 		"Vendor libraries" OFF)
 option(STATIC 		"Static link" OFF)
 option(GLES         "Use OpenGL ES" OFF)
+option(GLES2        "Restrict to OpenGL ES 2.0" OFF)
 
 option(HIDPI		"High DPI" OFF)
 
@@ -186,6 +187,10 @@ if(CMAKE_BUILD_TYPE STREQUAL Debug)
 	set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
 
+if(GLES2 STREQUAL ON)
+    set(GLES ON) # Must be on
+endif()
+
 #
 # 1. Check platforms
 #
@@ -331,6 +336,10 @@ else()
 
     if (GLES STREQUAL ON)
         target_compile_options(${BUILD_NAME} PRIVATE -DGLES)
+    endif()
+
+    if(GLES2 STREQUAL ON)
+        target_compile_options(${BUILD_NAME} PRIVATE -DGLES2)
     endif()
 endif()
 

@@ -62,7 +62,10 @@ All builds can be packaged by compiling the `package` target (Using cmake CPack)
 
 Dependencies:
 
-- SDL3
+- [SDL3](https://www.libsdl.org/)
+- [Git LFS](https://git-lfs.com/)
+
+Please install [git lfs](https://git-lfs.com/) before cloning the repo or the assets won't download correctly.
 
 ### Flatpack
 Flatpack is the easiest way to compile on linux
