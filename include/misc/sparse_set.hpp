@@ -4,9 +4,9 @@
 
 #include <SDL3/SDL.h>
 #include <cinttypes>
-#include <csignal>
 #include <cstddef>
 #include <cstdint>
+#include <typeinfo>
 #include <vector>
 
 namespace utils {
@@ -14,6 +14,7 @@ namespace utils {
 // TODO: Put common stuff here
 class sparse_set_interface {
 	using underlying_container = std::vector<EntityID>;
+
       public:
 	using iterator = underlying_container::iterator;
 	using const_iterator = underlying_container::const_iterator;
@@ -38,16 +39,16 @@ class sparse_set_interface {
 inline sparse_set_interface::~sparse_set_interface() {}
 
 // PERF: https://gist.github.com/dakom/82551fff5d2b843cbe1601bbaff2acbf
-// FIXME: This is probably not the best implementation
 template <typename Component> class sparse_set : public sparse_set_interface {
 	using underlying_container = std::vector<EntityID>;
+
       public:
 	using iterator = underlying_container::iterator;
 	using const_iterator = underlying_container::const_iterator;
 
 	// No need to clean up, everything is in a vector
 	sparse_set() = default;
-	sparse_set(sparse_set&&) = default; // TODO: Verify if this works
+	sparse_set(sparse_set&&) = default;
 	sparse_set(const sparse_set&) = delete;
 	sparse_set& operator=(sparse_set&&) = delete;
 	sparse_set& operator=(const sparse_set&) = delete;
@@ -98,28 +99,22 @@ template <typename Component> class sparse_set : public sparse_set_interface {
 
 	[[nodiscard]] iterator begin() noexcept override {
 		return mPackedContainer.begin();
-		// return iterator{*mPackedContainer.data(), 0};
 	}
 	[[nodiscard]] const_iterator begin() const noexcept override {
 		return mPackedContainer.begin();
-		// return const_iterator{*mPackedContainer.data(), 0};
 	}
 	[[nodiscard]] const_iterator cbegin() const noexcept override {
 		return mPackedContainer.cbegin();
-		// return const_iterator{*mPackedContainer.data(), 0};
 	}
 
-	[[nodiscard]] iterator end() noexcept override { 
+	[[nodiscard]] iterator end() noexcept override {
 		return mPackedContainer.end();
-		// return iterator{*mPackedContainer.data(), mPackedContainer.size()}; 
 	}
 	[[nodiscard]] const_iterator end() const noexcept override {
 		return mPackedContainer.end();
-		// return const_iterator{*mPackedContainer.data(), mPackedContainer.size()};
 	}
 	[[nodiscard]] const_iterator cend() const noexcept override {
 		return mPackedContainer.cend();
-		// return const_iterator{*mPackedContainer.data(), mPackedContainer.size()};
 	}
 
 	[[nodiscard]] bool empty() const noexcept { return mPackedContainer.empty(); }

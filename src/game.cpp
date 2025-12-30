@@ -257,6 +257,8 @@ SDL_AppResult Game::iterate() {
 
 void Game::gui() {
 #ifdef IMGUI
+    static ImGuiIO& io = ImGui::GetIO();
+
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL3_NewFrame();
 	ImGui::NewFrame();
@@ -266,6 +268,8 @@ void Game::gui() {
 
 	/* Main menu */ {
 		ImGui::Begin("Developer menu");
+
+		ImGui::Text("Framerate: %.1f", io.Framerate);
 
 		ImGui::Text("WASD + Space to move");
 		ImGui::Text("E to take inventory");

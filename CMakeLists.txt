@@ -327,7 +327,10 @@ else()
 	endif()
 
 	if (OPTIMIZE STREQUAL ON)
-		target_compile_options(${BUILD_NAME} PRIVATE -march=native -Ofast -fopenmp -fno-math-errno)
+        if (NOT WEB)
+            target_compile_options(${BUILD_NAME} PRIVATE -march=native -fopenmp)
+        endif()
+		target_compile_options(${BUILD_NAME} PRIVATE -ffast-math -fno-math-errno)
 	endif()
 
 	if (CMAKE_BUILD_TYPE STREQUAL RelWithDebInfo)
