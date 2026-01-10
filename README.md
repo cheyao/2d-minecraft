@@ -1,10 +1,10 @@
 <h1 align="center" style="text-shadow: 2px 2px 5px red;">2D Minecraft with Custom Game Engine</h2>
 
 <div align="center">
-    <img src="https://cloud-a7gokq2sp-hack-club-bot.vercel.app/0image.png" width="auto" height="auto" alt="Demo pic of the game">
-    <img src="https://cloud-27xm3qrn9-hack-club-bot.vercel.app/1image.png" width="auto" height="auto" alt="Demo pic of the game">
-    <img src="https://cloud-49di6uwyy-hack-club-bot.vercel.app/0image.png" width="auto" height="auto" alt="Demo pic of the game">
-    <img src="https://cloud-49di6uwyy-hack-club-bot.vercel.app/1image.png" width="auto" height="auto" alt="Demo pic of the game">
+    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/69194621ebc5e58d_image.png" width="auto" height="auto" alt="Demo pic of the game">
+    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/f2ea563eb7075359_image.png" width="auto" height="auto" alt="Demo pic of the game">
+    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/52ce88733043c0f2_image.png" width="auto" height="auto" alt="Demo pic of the game">
+    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/5fe3dc6c87a67321_image.png" width="auto" height="auto" alt="Demo pic of the game">
 </div>
 
 <h3 align="center"><a href="https://opengl.pages.dev">Try out web version now!</a></h3>
