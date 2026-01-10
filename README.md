@@ -7,7 +7,7 @@
     <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/5fe3dc6c87a67321_image.png" width="auto" height="auto" alt="Demo pic of the game">
 </div>
 
-<h3 align="center"><a href="https://opengl.pages.dev">Try out web version now!</a></h3>
+<h3 align="center"><a href="https://cyao.dev/mc">Try out web version now!</a></h3>
 
 <h2 align="center">Controls</h2>
 
