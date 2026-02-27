@@ -1,10 +1,10 @@
 <h1 align="center" style="text-shadow: 2px 2px 5px red;">2D Minecraft with Custom Game Engine</h2>
 
 <div align="center">
-    <img src="assets/steve-game.png" width="auto" height="auto" alt="Demo pic of the game">
-    <img src="assets/crafting.png" width="auto" height="auto" alt="Demo pic of the game">
-    <img src="assets/rock-house.png" width="auto" height="auto" alt="Demo pic of the game">
-    <img src="assets/smelting.png" width="auto" height="auto" alt="Demo pic of the game">
+    <img src="pictures/steve-game.png" width="auto" height="auto" alt="Demo pic of the game">
+    <img src="pictures/crafting.png" width="auto" height="auto" alt="Demo pic of the game">
+    <img src="pictures/rock-house.png" width="auto" height="auto" alt="Demo pic of the game">
+    <img src="pictures/smelting.png" width="auto" height="auto" alt="Demo pic of the game">
 </div>
 
 <h3 align="center"><a href="https://cyao.dev/mc">Try out web version now!</a></h3>
