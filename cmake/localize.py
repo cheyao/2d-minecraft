@@ -14,7 +14,7 @@ if len(sys.argv) != 2:
 
     exit(1);
 
-with open(sys.argv[1]) as input: 
+with open(sys.argv[1], encoding="utf-8", newline="") as input: 
     r = csv.reader(input);
     
     langs = next(r);
@@ -36,6 +36,6 @@ for i in range(len(langs[2:])):
 
         data[row[0]] = row[i+2];
 
-    with open(outDir + "/" + langs[i+2] + ".json", "w") as output:
-        json.dump(data, output);
+    with open(outDir + "/" + langs[i+2] + ".json", "w", encoding="utf-8", newline="") as output:
+        json.dump(data, output, ensure_ascii=False);
 

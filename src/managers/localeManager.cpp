@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <vector>
 #include <version>
 
 LocaleManager::LocaleManager() : mLocaleDir(getBasePath() + "assets/strings/"), mLocaleDataS(nullptr, SDL_free) {
@@ -29,6 +30,10 @@ LocaleManager::LocaleManager() : mLocaleDir(getBasePath() + "assets/strings/"), 
 	SDL_Log("LocaleManager.cpp: Found locales %s", locList.data());
 
 	for (int i = 0; i < c; ++i) {
+		if (loc[i]->language == nullptr) {
+			continue;
+		}
+
 		mLocale = loc[i]->language;
 		if (loc[i]->country != nullptr) {
 			mLocale.append("-");
@@ -37,20 +42,22 @@ LocaleManager::LocaleManager() : mLocaleDir(getBasePath() + "assets/strings/"), 
 
 		SDL_Log("LocaleManager.cpp: Tring to load locale %s", mLocale.data());
 
-		loadLocale();
+		if (loadLocale()) {
+			SDL_Log("\033[32mLocaleManager.cpp: Successfully loaded system locale %s\033[0m", mLocale.data());
 
-		SDL_Log("\033[32mLocaleManager.cpp: Successfully loaded system locale %s\033[0m", mLocale.data());
+			SDL_free(loc);
 
-		SDL_free(loc);
-
-		return;
+			return;
+		}
 	}
 
 	SDL_free(loc);
 
-	mLocale = "en-US";
-	SDL_Log("\033[31mLocaleManager.cpp: Failed to find valid locale! Falling back to en-US.\033[0m");
-	loadLocale();
+	mLocale = "en";
+	SDL_Log("\033[31mLocaleManager.cpp: Failed to find valid system locale! Falling back to en.\033[0m");
+	if (!loadLocale()) {
+		SDL_LogCritical(SDL_LOG_CATEGORY_VIDEO, "LocaleManager.cpp: Failed to load fallback locale en");
+	}
 }
 
 std::u32string LocaleManager::U8toU32(const std::string_view& u8) const {
@@ -96,47 +103,59 @@ std::u32string LocaleManager::get(const std::string_view& id) const {
 	return U8toU32(mLocaleData[id.data()].GetString());
 }
 
-void LocaleManager::loadLocale() {
-	SDL_Log("LocaleManager.cpp: Loading %s", mLocale.data());
+bool LocaleManager::loadLocale() {
+	const std::string requestedLocale = mLocale;
+	SDL_Log("LocaleManager.cpp: Loading %s", requestedLocale.data());
 
-	std::string main;
+	std::string main = requestedLocale;
 
 #ifdef __cpp_lib_string_contains
-	if (mLocale.contains('-')) {
+	if (requestedLocale.contains('-')) {
 #else
-	if (mLocale.find('-') != std::string::npos) {
+	if (requestedLocale.find('-') != std::string::npos) {
 #endif
-		const std::size_t pos = mLocale.find('-');
-		main = mLocale.substr(0, pos);
-	} else {
-		main = mLocale;
+		const std::size_t pos = requestedLocale.find('-');
+		main = requestedLocale.substr(0, pos);
 	}
 
-	// Prefer specialized locale to generalized one
-	mLocaleDataS.reset(static_cast<char*>(loadFile((mLocaleDir + mLocale + ".json").data(), nullptr)));
+	std::vector<std::string> candidates = {requestedLocale};
+	if (main != requestedLocale) {
+		candidates.emplace_back(main);
+	}
+	if (main != "en" && requestedLocale != "en") {
+		candidates.emplace_back("en");
+	}
 
-	if (!mLocaleDataS) {
-		mLocaleDataS.reset(static_cast<char*>(loadFile((mLocaleDir + main + ".json").data(), nullptr)));
-
-		if (!mLocaleDataS) {
-			SDL_LogCritical(SDL_LOG_CATEGORY_VIDEO,
-					"LocaleManager.cpp: Failed to find/read locale shource %s: %s\n",
-					(mLocaleDir + mLocale + ".json").data(), SDL_GetError());
-			return;
+	for (const auto& candidate : candidates) {
+		std::unique_ptr<char[], std::function<void(char*)>> localeDataS(
+			static_cast<char*>(loadFile((mLocaleDir + candidate + ".json").data(), nullptr)), SDL_free);
+		if (!localeDataS) {
+			continue;
 		}
+
+		rapidjson::Document localeData;
+		if (localeData.ParseInsitu(localeDataS.get()).HasParseError()) {
+			SDL_LogCritical(SDL_LOG_CATEGORY_VIDEO, "\033[31mFailed to parse json %s (offset %u): %s\033[0m",
+					(mLocaleDir + candidate + ".json").data(), (unsigned)localeData.GetErrorOffset(),
+					rapidjson::GetParseError_En(localeData.GetParseError()));
+			ERROR_BOX("Failed to load save file");
+			ERROR_BOX("Failed to read locale, reinstall assets");
+
+			return false;
+		}
+
+		mLocale = candidate;
+		mLocaleData.Swap(localeData);
+		mLocaleDataS = std::move(localeDataS);
+
+		SDL_Log("LocaleManager.cpp: Found locale %s version %d", mLocale.data(), mLocaleData["version"].GetInt());
+		SDL_Log("LocaleManager.cpp: Successfully loaded locale %s", mLocale.data());
+
+		return true;
 	}
 
-	if (mLocaleData.ParseInsitu(mLocaleDataS.get()).HasParseError()) {
-		SDL_LogCritical(SDL_LOG_CATEGORY_VIDEO, "\033[31mFailed to parse json (offset %u): %s\033[0m",
-				(unsigned)mLocaleData.GetErrorOffset(),
-				rapidjson::GetParseError_En(mLocaleData.GetParseError()));
-		ERROR_BOX("Failed to load save file");
-		ERROR_BOX("Failed to read locale, reinstall assets");
-
-		return;
-	}
-
-	SDL_Log("LocaleManager.cpp: Found locale %s version %d", mLocale.data(), mLocaleData["version"].GetInt());
-
-	SDL_Log("LocaleManager.cpp: Successfully loaded locale %s", mLocale.data());
+	SDL_LogCritical(SDL_LOG_CATEGORY_VIDEO,
+			"LocaleManager.cpp: Failed to find/read locale sources for %s, fallback %s and en: %s\n",
+			requestedLocale.data(), main.data(), SDL_GetError());
+	return false;
 }
