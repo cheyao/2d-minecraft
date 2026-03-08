@@ -16,13 +16,13 @@ class LocaleManager {
 
 	void changeLocale(const std::string_view& locale) {
 		mLocale = locale;
-		loadLocale();
+		(void)loadLocale();
 	}
 	std::u32string get(const std::string_view& id) const;
 
       private:
 	std::u32string U8toU32(const std::string_view& u8) const;
-	void loadLocale();
+	[[nodiscard]] bool loadLocale();
 
 	const std::string mLocaleDir;
 	std::string mLocale;

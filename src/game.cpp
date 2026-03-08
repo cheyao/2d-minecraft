@@ -276,7 +276,7 @@ void Game::gui() {
 		ImGui::Text("ESC to close menu");
 		ImGui::Text("Right click to interract");
 
-		const char* locales[] = {"en", "fr"};
+		const char* locales[] = {"en", "fr", "zh-CN", "pt-BR", "es"};
 		static int current = 0;
 		if (ImGui::Combo("language", &current, locales, IM_ARRAYSIZE(locales))) {
 			mLocaleManager->changeLocale(locales[current]);

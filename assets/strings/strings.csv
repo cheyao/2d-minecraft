@@ -1,6 +1,6 @@
-id,comment,en,fr,zh-CN
-AD0,,Did you know? This game was developed during 7+ months!,Tu savais ? Cette jeux été déveloper dans plus de 7 mois!,你知道吗？这个游戏的开发周期长于7个月！
-AD1,,Did you know? This game uses its custom engine!,Tu savais ? Cette jeux utilise sa propre moteur de jeux!,你知道吗？这个游戏用的是自己的引擎！
-AD2,,Did you know? This game was coded entirely in C++!,Tu savais ? Cette jeux été crée entièrement avec C++!,你知道吗？这个游戏是完全用C++写的！
-AD3,,Did you know? This game handles (almost) everything by itself!,Tu savais ? Cette jeux fait tout par lui même!,你知道吗？这个游戏自己掌控所有东西！
-AD4,,Did you know? This game gets 1000+ FPS natively!,Tu savais ? Cette jeux fait plus de 1000+ FPS!,你知道吗？这个游戏有1000+ FPS！
+id,comment,en,fr,zh-CN,pt-BR,es
+AD0,,Did you know? This game was developed during 7+ months!,Tu savais ? Cette jeux été déveloper dans plus de 7 mois!,你知道吗？这个游戏的开发周期长于7个月！,Você sabia? Este jogo foi desenvolvido ao longo de mais de 7 meses!,¿Sabías que? ¡Este juego fue desarrollado durante más de 7 meses!
+AD1,,Did you know? This game uses its custom engine!,Tu savais ? Cette jeux utilise sa propre moteur de jeux!,你知道吗？这个游戏用的是自己的引擎！,Você sabia? Este jogo usa a própria engine!,¿Sabías que? ¡Este juego usa su propio motor!
+AD2,,Did you know? This game was coded entirely in C++!,Tu savais ? Cette jeux été crée entièrement avec C++!,你知道吗？这个游戏是完全用C++写的！,Você sabia? Este jogo foi feito inteiramente em C++!,¿Sabías que? ¡Este juego fue hecho completamente en C++!
+AD3,,Did you know? This game handles (almost) everything by itself!,Tu savais ? Cette jeux fait tout par lui même!,你知道吗？这个游戏自己掌控所有东西！,Você sabia? Este jogo cuida de (quase) tudo sozinho!,¿Sabías que? ¡Este juego maneja (casi) todo por sí mismo!
+AD4,,Did you know? This game gets 1000+ FPS natively!,Tu savais ? Cette jeux fait plus de 1000+ FPS!,你知道吗？这个游戏有1000+ FPS！,Você sabia? Este jogo roda a mais de 1000 FPS nativamente!,¿Sabías que? ¡Este juego funciona a más de 1000 FPS de forma nativa!
